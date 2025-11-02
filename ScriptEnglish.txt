@@ -2320,7 +2320,7 @@ Button.Parent = ScreenGui
 Button.Size = UDim2.new(0, 50, 0, 50)
 Button.Position = UDim2.new(0.015, 0, 0.02, 20)
 Button.BackgroundTransparency = 1
-Button.Image = "rbxassetid://1563647426"
+Button.Image = "rbxassetid://91347148253026"
 local UICorner = Instance.new("UICorner")
 
 UICorner.CornerRadius = UDim.new(1, 0)
@@ -2357,28 +2357,28 @@ task.defer(function()
 end)
 wait(1.0)
 Tabs.Info:AddButton({
-        Title="hidepttai",
+        Title="Ten Hub",
         Description="Discord",
         Callback=function()
             setclipboard(tostring("https://discord.gg/tenhub")) 
         end
 })
 Tabs.Info:AddButton({
-    Title="lo",
+    Title="Ten Nguoi Lam",
     Description="Youtube",
     Callback=function()
         setclipboard(tostring("https://www.youtube.com/"))
     end
 })
 Tabs.Info:AddButton({
-    Title="Fb Ngnwidbe",
+    Title="Fb Nguoi Lam",
     Description="Facebook",
     Callback=function()
         setclipboard(tostring("https://www.facebook.com/"))
     end
 })
 Tabs.Info:AddParagraph({
-    Title="tao",
+    Title="Nguoi Lam",
     Content="Credits"
 })
 local executorName
@@ -9334,5 +9334,4 @@ if currentTime - lastNotificationTime >= notificationCooldown then
         Duration = 1
     })
     lastNotificationTime = currentTime
-endme = currentTime
 end

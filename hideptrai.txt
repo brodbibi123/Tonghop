@@ -1,112 +1,175 @@
-loadstring(game:HttpGet(("https://raw.githubusercontent.com/daucobonhi/Ui-Redz-V2/refs/heads/main/UiREDzV2.lua")))()
+local ui = Instance.new("ScreenGui")
+ui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-       local Window = MakeWindow({
-         Hub = {
-         Title = "hideptrai",
-         Animation = "hideptrai"
-         },
-        Key = {
-        KeySystem = false,
-        Title = "Key System",
-        Description = "",
-        KeyLink = "hideptrai",
-        Keys = {"1234"},
-        Notifi = {
-        Notifications = true,
-        CorrectKey = "Running the Script...",
-       Incorrectkey = "The key is incorrect",
-       CopyKeyLink = "Copied to Clipboard"
-      }
-    }
-  })
+local toggle = Instance.new("TextButton")
+toggle.Parent = ui
+toggle.Size = UDim2.new(0,120,0,45)
+toggle.Position = UDim2.new(0,30,0,200)
+toggle.Text = "Fly: OFF"
 
-       MinimizeButton({
-       Image = "http://www.roblox.com/asset/?id=105635847414987",
-       Size = {50, 50},
-       Color = Color3.fromRGB(10, 10, 10),
-       Corner = true,
-       Stroke = false,
-       StrokeColor = Color3.fromRGB(255, 0, 0)
-      })
-      
------- Tab
-     local Tab1o = MakeTab({Name = "Script BloxFruits"})
-     local Tab2o = MakeTab({Name = "Script GrowAGarden"})
-------- BUTTON
-    
-    AddButton(Tab1o, {
-     Name = "Redz Hub",
-    Callback = function()
-	  local Settings = {
-JoinTeam = "Pirates"; -- Pirates / Marines
-Translator = true; -- true / false
-}
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau"))(Settings)
-  end
-  })
+local targetBox = Instance.new("TextBox")
+targetBox.Parent = ui
+targetBox.Size = UDim2.new(0,150,0,40)
+targetBox.Position = UDim2.new(0,30,0,150)
+targetBox.PlaceholderText = "Tên người chơi"
 
-AddButton(Tab2o, {
-     Name = "nolag",
-    Callback = function()
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/NoLag-id/No-Lag-HUB/refs/heads/main/Loader/LoaderV1.lua"))()
-  end
-  })
+local flying = false
+local speed = 325
+local step = 0.001
 
-AddButton(Tab2o, {
-     Name = "tbao",
-    Callback = function(
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/game/refs/heads/main/TbaoHubGrowGarden"))()
-  end
-  })
+toggle.MouseButton1Click:Connect(function()
+	flying = not flying
+	toggle.Text = flying and "Fly: ON" or "Fly: OFF"
+end)
 
-AddButton(Tab1o, {
-     Name = "bapred",
-    Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/BapRed/main/BapRedHub"))()
-  end
-  })
+game:GetService("RunService").RenderStepped:Connect(function()
+	if flying then
+		local plr = game.Players.LocalPlayer
+		local char = plr.Character
+		local hrp = char and char:FindFirstChild("HumanoidRootPart")
+		if not hrp then return end
 
-AddButton(Tab1o, {
-     Name = "fixlag",
-    Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboLite/Script/main/FixLag.lua"))()
-  end
-  })
+		local target = game.Players:FindFirstChild(targetBox.Text)
+		local tchar = target and target.Character
+		local thrp = tchar and tchar:FindFirstChild("HumanoidRootPart")
+		if not thrp then return end
 
-AddButton(Tab1o, {
-     Name = "kaitun",
-    Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/simple-hubs/contents/refs/heads/main/bloxfruit-kaitan-main.lua"))()
-  end
-  })
+		local pos = hrp.CFrame
+		local goal = thrp.CFrame
+		local dir = (goal.Position - pos.Position).Unit
+		local new = pos + dir * speed * step
+		hrp.CFrame = CFrame.new(new.Position, goal.Position)
+	end
+end)
 
-AddButton(Tab1o, {
-     Name = "wazure",
-    Callback = function()
-getgenv().Team = "Pirates"
-getgenv().AutoLoad = false --Will Load Script On Server Hop
-getgenv().SlowLoadUi  = false
-getgenv().ForceUseSilentAimDashModifier = false --Force turn on silent aim , if error then executor problem
-getgenv().ForceUseWalkSpeedModifier = false --Force turn on Walk Speed Modifier , if error then executor problem
- loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"))()
-  end
-  })
 
-AddButton(Tab1o, {
-     Name = "xero",
-    Callback = function()
-getgenv().Team = "Marines"
-getgenv().Hide_Menu = false
-getgenv().Auto_Execute = false
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Xero2409/XeroHub/refs/heads/main/main.lua"))()
-  end
-  })
 
-AddButton(Tab1o, {
-     Name = "bluex",
-    Callback = function()
-_G.Team = "Pirates"
-_G.FixLag = false
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-BlueX/BlueX-Hub/refs/heads/main/Main.lua"))()
-  end
-  })
+
+
+
+
+
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "FlyToPlayerGUI"
+
+-- Nút ≡ bật/tắt
+local ToggleMain = Instance.new("TextButton", ScreenGui)
+ToggleMain.Size = UDim2.new(0, 40, 0, 40)
+ToggleMain.Position = UDim2.new(0, 10, 0, 10)
+ToggleMain.Text = "≡"
+ToggleMain.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleMain.TextColor3 = Color3.new(1,1,1)
+ToggleMain.BorderSizePixel = 0
+
+-- Frame chính
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Size = UDim2.new(0, 200, 0, 120)
+Frame.Position = UDim2.new(0, 60, 0, 60)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 0
+Frame.BackgroundTransparency = 0.2
+Frame.Active = true
+Frame.Draggable = true
+Frame.Visible = true
+
+-- Nút bật / tắt bay
+local ToggleFly = Instance.new("TextButton", Frame)
+ToggleFly.Size = UDim2.new(1, 0, 0, 30)
+ToggleFly.Position = UDim2.new(0, 0, 0, 0)
+ToggleFly.Text = "🔁 Bật"
+ToggleFly.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+ToggleFly.TextColor3 = Color3.new(1,1,1)
+ToggleFly.BorderSizePixel = 0
+
+-- Nút chọn player
+local PlayerList = Instance.new("TextButton", Frame)
+PlayerList.Size = UDim2.new(1, 0, 0, 30)
+PlayerList.Position = UDim2.new(0, 0, 0, 35)
+PlayerList.Text = "🎯 Chọn Người"
+PlayerList.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+PlayerList.TextColor3 = Color3.new(1,1,1)
+PlayerList.BorderSizePixel = 0
+
+-- Dropdown
+local Dropdown = Instance.new("Frame", Frame)
+Dropdown.Size = UDim2.new(1, 0, 0, 0)
+Dropdown.Position = UDim2.new(0, 0, 0, 65)
+Dropdown.BackgroundTransparency = 1
+Dropdown.ClipsDescendants = true
+
+-- Logic
+local SelectedPlayer = nil
+local Active = false
+
+local function RefreshPlayers()
+	for _, child in pairs(Dropdown:GetChildren()) do
+		if child:IsA("TextButton") then
+			child:Destroy()
+		end
+	end
+
+	local count = 0
+	for _, plr in pairs(Players:GetPlayers()) do
+		if plr ~= LocalPlayer then
+			count += 1
+			local btn = Instance.new("TextButton", Dropdown)
+			btn.Size = UDim2.new(1, 0, 0, 25)
+			btn.Position = UDim2.new(0, 0, 0, (count - 1) * 25)
+			btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+			btn.Text = plr.Name
+			btn.TextColor3 = Color3.new(1, 1, 1)
+			btn.BorderSizePixel = 0
+			btn.MouseButton1Click:Connect(function()
+				SelectedPlayer = plr
+				PlayerList.Text = "🎯 " .. plr.Name
+				Dropdown.Size = UDim2.new(1, 0, 0, 0)
+			end)
+		end
+	end
+	Dropdown.Size = UDim2.new(1, 0, 0, count * 25)
+end
+
+-- Mở dropdown thủ công
+PlayerList.MouseButton1Click:Connect(RefreshPlayers)
+
+-- Tự cập nhật mỗi 3 giây nếu đang mở
+task.spawn(function()
+	while true do
+		task.wait(3)
+		if Dropdown.Size.Y.Offset > 0 then
+			RefreshPlayers()
+		end
+	end
+end)
+
+-- Toggle bay
+ToggleFly.MouseButton1Click:Connect(function()
+	Active = not Active
+	ToggleFly.Text = Active and "✅ Đang Bật" or "🔁 Bật"
+end)
+
+-- Nút ≡ bật/tắt toàn bộ GUI
+ToggleMain.MouseButton1Click:Connect(function()
+	Frame.Visible = not Frame.Visible
+end)
+
+-- Bay theo player ở độ cao 13
+task.spawn(function()
+	while true do
+		task.wait(0.01)
+		if Active and SelectedPlayer and SelectedPlayer.Character and SelectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			local myChar = LocalPlayer.Character
+			local myHRP = myChar and myChar:FindFirstChild("HumanoidRootPart")
+			local targetHRP = SelectedPlayer.Character.HumanoidRootPart
+			if myHRP then
+				myHRP.CFrame = CFrame.new(targetHRP.Position + Vector3.new(0, 0, 0))
+			end
+		end
+	end
+end)
